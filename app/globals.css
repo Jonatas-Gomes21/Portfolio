@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+ * Tema definido uma vez na raiz. Escuro por padrão; [data-theme="light"] troca os tokens.
+ * Cantos (regra única): controles (botões, chips, menu, alternadores) são pílula;
+ * superfícies (painéis, imagens, blocos) usam --radius-surface. Nada fora disso.
+ * Destaque: um laranja queimado só. Texto sobre ele é sempre a tinta escura (AA nos dois temas).
+ */
+:root {
+  --bg: #0d0e10;
+  --bg-raised: #131518;
+  --bg-sunken: #0a0b0c;
+  --line: #2a2d33;
+  --ink: #ecebe8;
+  --ink-muted: #a8a7a2;
+  --accent: #e8590c;
+  --on-accent: #0d0e10;
+  --panel: rgb(19 21 24 / 0.86);
+  --radius-surface: 16px;
+  --radius-control: 9999px;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ee;
+  --bg-raised: #ece9e2;
+  --bg-sunken: #faf9f6;
+  --line: #cfcbc2;
+  --ink: #17181a;
+  --ink-muted: #55534e;
+  --panel: rgb(245 243 238 / 0.88);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-raised: var(--bg-raised);
+  --color-sunken: var(--bg-sunken);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-panel: var(--panel);
+  --radius-surface: var(--radius-surface);
+  --radius-control: var(--radius-control);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Alternadores de tema: os dois ícones existem no HTML, o CSS escolhe qual aparece (sem salto na hidratação). */
+.theme-icon-sun { display: none; }
+[data-theme="light"] .theme-icon-moon { display: none; }
+[data-theme="light"] .theme-icon-sun { display: inline-block; }
+
+/* Marquee (Magic UI): único movimento horizontal contínuo da página. */
+@theme inline {
+  --animate-marquee: marquee var(--duration) infinite linear;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+}
+
+@keyframes caret { 50% { opacity: 0; } }
+.caret { animation: caret 1.1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee { flex-wrap: wrap; justify-content: center; }
+  .marquee > div { animation: none; flex-wrap: wrap; }
+  .marquee > div:not(:first-child) { display: none; }
+  .caret { animation: none; }
+}
