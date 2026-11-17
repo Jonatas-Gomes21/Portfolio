@@ -34,8 +34,8 @@ export function Portfolio({ available }: { available: Record<string, boolean> })
         <Nav />
         <main id="conteudo">
           <Hero />
-          <TechMarquee />
           <Projects />
+          <TechMarquee />
           <Stack />
           <Services />
           <Process />
