@@ -1,65 +1,84 @@
 "use client";
+import { createRef, useRef, useState, type Ref } from "react";
 import { useT } from "@/components/providers";
 import { Reveal } from "@/components/site/reveal";
 import { techs, TechLogo, type Tech } from "@/components/site/tech-logos";
-
+import { AnimatedBeam } from "@/components/ui/animated-beam";
 const byName = (n: string) => techs.find((t) => t.name === n) as Tech;
 const frontend = ["TypeScript", "React", "Vite", "Tailwind CSS", "shadcn/ui", "Next.js"].map(byName);
 const backend = ["Node.js", "Fastify", "Express", "Prisma", "PostgreSQL"].map(byName);
 
-const CX = 500;
-const CY = 392;
-const placed = [
-  ...frontend.map((tech, i) => ({ tech, x: 62 + i * 80 })),
-  ...backend.map((tech, i) => ({ tech, x: 562 + i * 90 })),
-];
+function TechNode({ tech, side, nodeRef }: { tech: Tech; side: "left" | "right"; nodeRef: Ref<HTMLDivElement> }) {
+  const circle = (
+    <div
+      ref={nodeRef}
+      className="z-10 grid size-14 shrink-0 place-items-center rounded-full border border-line bg-raised"
+    >
+      <TechLogo tech={tech} size={26} title={false} />
+    </div>
+  );
+  const label = <span className="text-sm">{tech.name}</span>;
+  return (
+    <li className="flex items-center gap-3">
+      {side === "left" ? (
+        <>
+          {label}
+          {circle}
+        </>
+      ) : (
+        <>
+          {circle}
+          {label}
+        </>
+      )}
+    </li>
+  );
+}
 
-/* Versão simples do bloco convergente: as peças da stack descem até um único ponto, o projeto. Sem órbitas. */
+/* Feixes animados (Magic UI) das peças da stack até um único ponto, o projeto. Só no desktop; no celular entram as listas. */
 function Diagram() {
   const t = useT();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const centerRef = useRef<HTMLDivElement>(null);
+  const [frontRefs] = useState(() => frontend.map(() => createRef<HTMLDivElement>()));
+  const [backRefs] = useState(() => backend.map(() => createRef<HTMLDivElement>()));
 
   return (
-    <svg
-      viewBox="0 0 1000 450"
-      className="hidden w-full text-ink lg:block"
-      role="img"
-      aria-label={`${t.stack.frontend}: ${frontend.map((f) => f.name).join(", ")}. ${t.stack.backend}: ${backend.map((f) => f.name).join(", ")}. ${t.stack.center}.`}
+    <div
+      ref={containerRef}
+      className="relative hidden w-full items-center justify-between gap-16 px-4 text-ink lg:flex"
     >
-      <g fontFamily="var(--font-mono)" fontSize="13" fill="var(--ink-muted)">
-        <text x="262" y="22" textAnchor="middle">{t.stack.frontend}</text>
-        <text x="742" y="22" textAnchor="middle">{t.stack.backend}</text>
-      </g>
-      <line x1="30" y1="36" x2="490" y2="36" stroke="var(--line)" />
-      <line x1="530" y1="36" x2="970" y2="36" stroke="var(--line)" />
+      <div>
+        <h3 className="mb-6 border-b border-line pb-3 text-right font-mono text-sm text-muted">{t.stack.frontend}</h3>
+        <ul className="flex flex-col items-end gap-4">
+          {frontend.map((tech, i) => (
+            <TechNode key={tech.name} tech={tech} side="left" nodeRef={frontRefs[i]} />
+          ))}
+        </ul>
+      </div>
 
-      {placed.map(({ tech, x }) => (
-        <path
-          key={tech.name}
-          d={`M ${x} 150 C ${x} 270, ${CX} 250, ${CX} ${CY - 26}`}
-          fill="none"
-          stroke="var(--accent)"
-          strokeWidth="1.5"
-          strokeOpacity="0.9"
-        />
+      <div
+        ref={centerRef}
+        className="z-10 flex h-14 shrink-0 items-center rounded-control bg-accent px-8 font-display text-lg font-bold text-on-accent"
+      >
+        {t.stack.center}      </div>
+
+      <div>
+        <h3 className="mb-6 border-b border-line pb-3 font-mono text-sm text-muted">{t.stack.backend}</h3>
+        <ul className="flex flex-col gap-4">
+          {backend.map((tech, i) => (
+            <TechNode key={tech.name} tech={tech} side="right" nodeRef={backRefs[i]} />
+          ))}
+        </ul>
+      </div>
+
+      {frontRefs.map((ref, i) => (
+        <AnimatedBeam key={frontend[i].name} containerRef={containerRef} fromRef={ref} toRef={centerRef} duration={4 + (i % 3)} delay={i * 0.4} />
       ))}
-
-      {placed.map(({ tech, x }) => (
-        <g key={tech.name}>
-          <circle cx={x} cy={86} r={30} fill="var(--bg-raised)" stroke="var(--line)" />
-          <svg x={x - 14} y={72} width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d={tech.icon.path} />
-          </svg>
-          <text x={x} y={138} textAnchor="middle" fontFamily="var(--font-body)" fontSize="13" fill="var(--ink)">
-            {tech.name}
-          </text>
-        </g>
+      {backRefs.map((ref, i) => (
+        <AnimatedBeam key={backend[i].name} containerRef={containerRef} fromRef={ref} toRef={centerRef} reverse duration={4 + (i % 3)} delay={i * 0.4} />
       ))}
-
-      <rect x={CX - 78} y={CY - 26} width="156" height="52" rx="26" fill="var(--accent)" />
-      <text x={CX} y={CY + 6} textAnchor="middle" fontFamily="var(--font-display)" fontWeight="700" fontSize="18" fill="var(--on-accent)">
-        {t.stack.center}
-      </text>
-    </svg>
+    </div>
   );
 }
 
