@@ -1,0 +1,28 @@
+/* Galeria inclinada do hero. A inclinação fica no plano externo; o movimento vertical, em cada coluna. */
+.hg { position: relative; height: 535px; margin-top: 56px; isolation: isolate; }
+.hg-viewport {
+  position: absolute; inset: 0; overflow: hidden; perspective: 1200px; perspective-origin: 50% 0%;
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0, 0, 0, .12) 22%, rgba(0, 0, 0, .6) 36%, #000 48%, #000 62%, rgba(0, 0, 0, .55) 76%, rgba(0, 0, 0, .12) 91%, transparent 100%);
+}
+.hg-plane {
+  position: absolute; top: -170px; left: 50%; display: flex; align-items: flex-start; gap: 22px; width: max-content;
+  transform: translateX(-50%) rotateX(25deg) rotateY(-5deg) rotateZ(-10deg); transform-origin: 50% 30%;
+}
+.hg-column { flex: 0 0 385px; width: 385px; animation: hg-up var(--hg-duration, 42s) linear infinite; animation-delay: var(--hg-delay, 0s); will-change: transform; }
+.hg-column-down { animation-name: hg-down; }
+.hg-group { display: flex; flex-direction: column; gap: 22px; padding-bottom: 22px; }
+.hg-card { overflow: hidden; flex: none; aspect-ratio: 640 / 440; border-radius: var(--radius-surface); border: 1px solid var(--line); background: var(--bg-raised); box-shadow: 0 6px 30px rgb(0 0 0 / .25); }
+.hg-card img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.hg-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@keyframes hg-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes hg-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+@media (min-width: 1700px) { .hg { height: 600px; } .hg-column { flex-basis: 455px; width: 455px; } }
+@media (max-width: 900px) { .hg { height: 480px; } .hg-column { flex-basis: 330px; width: 330px; } }
+@media (max-width: 640px) {
+  .hg { height: 420px; margin-top: 40px; }
+  .hg-plane { top: -110px; gap: 15px; transform: translateX(-50%) rotateX(22deg) rotateY(-5deg) rotateZ(-12deg); }
+  .hg-column { flex-basis: 260px; width: 260px; }
+  .hg-group { gap: 15px; padding-bottom: 15px; }
+  .hg-card { border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .hg-column { animation: none; will-change: auto; } .hg-column:nth-child(2n) { transform: translateY(-120px); } }

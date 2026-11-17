@@ -6,6 +6,7 @@ import { useT } from "@/components/providers";
 import { Button } from "@/components/ui/button";
 import { Typing } from "@/components/site/typing";
 import { LightRays } from "@/components/ui/light-rays";
+import { HeroGallery } from "@/components/site/hero-gallery";
 
 export function Hero() {
   const t = useT();
@@ -13,10 +14,10 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative bg-bg px-5 pb-24 pt-32 md:px-8 md:pb-32 md:pt-40"
+      className="relative overflow-hidden bg-bg pt-32 md:pt-40"
     >
       <LightRays aria-hidden="true" />
-      <div className="relative mx-auto max-w-4xl text-center">
+      <div className="relative mx-auto max-w-4xl px-5 text-center md:px-8">
         <div>
           <Typing text={t.hero.typed} />
           <motion.h1
@@ -56,6 +57,7 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
+      <HeroGallery />
     </section>
   );
 }
