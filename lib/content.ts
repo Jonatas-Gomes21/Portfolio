@@ -63,7 +63,16 @@ type Dict = {
     frontend: string;
     backend: string;
     center: string;
+    /* camadas do projeto no centro do diagrama: interface, API, banco */
+    layers: [string, string, string];
+    /* o que é cada camada, em linguagem leiga (mesma ordem de layers) */
+    layerDescs: [string, string, string];
     seoNote: string;
+    /* dica do diagrama e rótulo da camada no popover e nos cartões */
+    hint: string;
+    layerLabel: string;
+    /* uma linha sobre o que cada tecnologia faz, pelo nome em lib/tech-logos */
+    techs: Record<string, string>;
   };
   services: {
     eyebrow: string;
@@ -243,7 +252,28 @@ export const dict: Record<Lang, Dict> = {
       frontend: "Frontend",
       backend: "Backend",
       center: "Seu projeto",
+      layers: ["Interface", "API", "Banco de dados"],
+      layerDescs: [
+        "A parte que você vê e usa: telas, botões, textos e formulários.",
+        "O intermediário que recebe os pedidos da tela, aplica as regras do sistema e busca ou guarda as informações.",
+        "O lugar onde os dados ficam guardados com segurança: cadastros, pedidos, agendamentos.",
+      ],
       seoNote: "Next.js para projetos com foco em SEO",
+      hint: "Passe o mouse ou toque numa tecnologia para ver onde ela entra no projeto, ou numa camada para entender o que ela é.",
+      layerLabel: "Camada",
+      techs: {
+        TypeScript: "JavaScript com tipos: menos bugs e código mais fácil de manter.",
+        React: "Interfaces montadas com componentes reutilizáveis.",
+        Vite: "Servidor de desenvolvimento e build muito rápidos.",
+        "Tailwind CSS": "Estilos por classes utilitárias, direto no markup.",
+        "shadcn/ui": "Componentes acessíveis que ficam no código do projeto.",
+        "Next.js": "Rotas, renderização no servidor e SEO em um só framework.",
+        "Node.js": "JavaScript também no servidor, na mesma linguagem do front.",
+        Fastify: "Framework web rápido e enxuto para construir APIs.",
+        Express: "Servidor HTTP minimalista para APIs e serviços.",
+        Prisma: "ORM com tipos para ler e gravar no banco com segurança.",
+        PostgreSQL: "Banco de dados relacional para os dados do sistema.",
+      },
     },
     services: {
       eyebrow: "O que eu faço",
@@ -486,7 +516,28 @@ export const dict: Record<Lang, Dict> = {
       frontend: "Frontend",
       backend: "Backend",
       center: "Your project",
+      layers: ["Interface", "API", "Database"],
+      layerDescs: [
+        "The part you see and use: screens, buttons, text and forms.",
+        "The go-between that receives requests from the screen, applies the system's rules and fetches or saves information.",
+        "Where the data is kept safe: customers, orders, bookings.",
+      ],
       seoNote: "Next.js for SEO-driven projects",
+      hint: "Hover or tap a technology to see where it fits in the project, or a layer to see what it is.",
+      layerLabel: "Layer",
+      techs: {
+        TypeScript: "JavaScript with types: fewer bugs and code that is easier to maintain.",
+        React: "Interfaces built from reusable components.",
+        Vite: "A very fast development server and build.",
+        "Tailwind CSS": "Styling with utility classes, right in the markup.",
+        "shadcn/ui": "Accessible components that live in the project's own code.",
+        "Next.js": "Routing, server rendering and SEO in a single framework.",
+        "Node.js": "JavaScript on the server too, the same language as the front end.",
+        Fastify: "A fast, lean web framework for building APIs.",
+        Express: "A minimal HTTP server for APIs and services.",
+        Prisma: "A typed ORM to read and write the database safely.",
+        PostgreSQL: "A relational database for the system's data.",
+      },
     },
     services: {
       eyebrow: "What I do",

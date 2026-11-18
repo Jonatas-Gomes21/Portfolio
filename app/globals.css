@@ -4,7 +4,7 @@
  * Tema definido uma vez na raiz. Escuro por padrão; [data-theme="light"] troca os tokens.
  * Cantos (regra única): controles (botões, chips, menu, alternadores) são pílula;
  * superfícies (painéis, imagens, blocos) usam --radius-surface. Nada fora disso.
- * Destaque: um laranja queimado só. Texto sobre ele é sempre a tinta escura (AA nos dois temas).
+ * Destaque: um ciano só (no claro, um tom mais escuro para contrastar com o fundo). Texto sobre ele é sempre a tinta escura (AA nos dois temas).
  */
 :root {
   --bg: #0d0e10;
@@ -13,11 +13,15 @@
   --line: #2a2d33;
   --ink: #ecebe8;
   --ink-muted: #a8a7a2;
-  --accent: #e8590c;
+  --accent: #3ec8e4;
   --on-accent: #0d0e10;
   --panel: rgb(19 21 24 / 0.86);
   --radius-surface: 16px;
   --radius-control: 9999px;
+  /* Faixas de seção: no escuro são translúcidas para o fundo global (degradê + estrelas) aparecer. */
+  --band: transparent;
+  --band-raised: rgb(255 255 255 / 0.028);
+  --band-sunken: rgb(0 0 0 / 0.3);
   color-scheme: dark;
 }
 
@@ -29,6 +33,10 @@
   --ink: #17181a;
   --ink-muted: #55534e;
   --panel: rgb(245 243 238 / 0.88);
+  --accent: #0e8aa6;
+  --band: var(--bg);
+  --band-raised: var(--bg-raised);
+  --band-sunken: var(--bg-sunken);
   color-scheme: light;
 }
 
@@ -42,6 +50,9 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-panel: var(--panel);
+  --color-band: var(--band);
+  --color-band-raised: var(--band-raised);
+  --color-band-sunken: var(--band-sunken);
   --radius-surface: var(--radius-surface);
   --radius-control: var(--radius-control);
   --font-display: var(--font-display);
@@ -76,6 +87,16 @@ body {
 [data-theme="light"] .theme-icon-moon { display: none; }
 [data-theme="light"] .theme-icon-sun { display: inline-block; }
 
+/* Transição do tema (AnimatedThemeToggler): o JS anima o clip-path do novo snapshot; aqui só desligamos o crossfade padrão e fixamos o primeiro quadro. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+[data-theme-vt="active"]::view-transition-new(root) {
+  clip-path: var(--theme-vt-clip-from);
+}
+
 /* Marquee (Magic UI): único movimento horizontal contínuo da página. */
 @theme inline {
   --animate-marquee: marquee var(--duration) infinite linear;
@@ -95,3 +116,14 @@ body {
   .marquee > div:not(:first-child) { display: none; }
   .caret { animation: none; }
 }
+
+/* Fundo global (o mesmo do hero): base quase preta, brilho azul leve no pé da tela e estrelas.
+   Fixo atrás de tudo; só no tema escuro (no claro as faixas voltam a ser sólidas). */
+.site-bg {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(25, 127, 255, 0) 38%, rgba(25, 127, 255, .042) 54%, rgba(25, 127, 255, .052) 68%, rgba(25, 127, 255, .03) 100%),
+    #020204;
+}
+[data-theme="light"] .site-bg { display: none; }
+.site-stars { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; background: #fff; }

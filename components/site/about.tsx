@@ -12,7 +12,7 @@ export function About() {
   return (
     <section
       aria-labelledby="about-title"
-      className="bg-bg px-5 py-24 md:px-8 md:py-32"
+      className="bg-band px-5 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-12 md:gap-16">
         <Reveal className="md:col-span-5">

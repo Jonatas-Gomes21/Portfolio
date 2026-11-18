@@ -11,7 +11,7 @@ export function Timeline() {
     <section
       id="trajetoria"
       aria-labelledby="timeline-title"
-      className="bg-sunken px-5 py-24 md:px-8 md:py-32"
+      className="bg-band-sunken px-5 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-4xl">
         <h2

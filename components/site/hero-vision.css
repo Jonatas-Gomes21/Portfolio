@@ -1,0 +1,174 @@
+/*
+ * Hero "Vision": composição desenhada numa tela fixa de 1172 x 657 px e escalada por um único transform.
+ * Todo elemento do desktop é absoluto em pixels de design; o centro óptico é x=586.
+ * Abaixo de 700px vira uma coluna em fluxo normal (ver o fim do arquivo).
+ * Segue o tema: no escuro usa o fundo global (.site-bg); no claro, o próprio fundo (.hv-bg) e textos escuros (bloco "Tema claro" abaixo).
+ */
+.hv {
+  position: relative;
+  height: max(100svh, 560px);
+  overflow: hidden;
+  background: transparent; /* no escuro usa o fundo global (.site-bg), sem emenda */
+  color: #fff;
+  font-family: var(--font-poppins), Poppins, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  isolation: isolate;
+}
+.hv a { text-decoration: none; color: inherit; }
+/* desktop: o pé do hero esmaece em vez de terminar em linha reta */
+@media (min-width: 701px) { .hv { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent); } }
+/* No escuro o fundo global (.site-bg) aparece; o fundo e as estrelas do hero só existem no tema claro (onde .site-bg some). */
+:root:not([data-theme="light"]) .hv-bg,
+:root:not([data-theme="light"]) .hv-stars { display: none; }
+
+.hv-canvas {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1172px;
+  height: 657px;
+  transform: translateX(-50%) scale(var(--k, 1));
+  transform-origin: 50% 0;
+}
+.hv-canvas > * { position: absolute; }
+.hv-stack { position: absolute; inset: 0; z-index: 300; }
+.hv-stack > * { position: absolute; }
+
+/* Fundo: nunca anima. Gradiente azul bem leve no pé + estrelas. */
+.hv-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(25, 127, 255, 0) 38%, rgba(25, 127, 255, .042) 54%, rgba(25, 127, 255, .052) 68%, rgba(25, 127, 255, .03) 100%),
+    #020204;
+}
+.hv-stars { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; background: #fff; z-index: 0; }
+
+/* ---------- Tema claro ---------- */
+[data-theme="light"] .hv { color: var(--ink); }
+[data-theme="light"] .hv-bg {
+  background:
+    linear-gradient(180deg, rgba(14, 138, 166, 0) 30%, rgba(14, 138, 166, .08) 62%, rgba(14, 138, 166, 0) 100%), /* volta a 0 no pé: sem emenda com a seção seguinte */
+    var(--bg);
+}
+[data-theme="light"] .hv-stars { display: none; }
+[data-theme="light"] .hv-badge { border-color: rgba(0, 0, 0, .1); background: rgba(255, 255, 255, .6); box-shadow: 0 1px 2px rgba(0, 0, 0, .05); }
+[data-theme="light"] .hv-badge b { color: var(--ink); }
+[data-theme="light"] .hv-h1 { color: var(--ink); text-shadow: none; }
+[data-theme="light"] .hv-sub { color: var(--ink-muted); }
+[data-theme="light"] .hv-btn:not(.ghost) { color: #fff; } /* o botão principal continua escuro, com texto branco */
+[data-theme="light"] .hv-btn.ghost { color: var(--ink); background: rgba(0, 0, 0, .04); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2); }
+[data-theme="light"] .hv-btn.ghost:hover { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .4); }
+[data-theme="light"] .hv-btn:focus-visible { outline-color: var(--accent); }
+[data-theme="light"] .hv-card { box-shadow: 0 24px 46px rgba(0, 0, 0, .22), 0 3px 8px rgba(0, 0, 0, .18); }
+
+/* ---------- Selo ---------- */
+.hv-badge {
+  left: 586px; top: 95px; transform: translateX(-50%);
+  height: 39px; border-radius: 12px; z-index: 300;
+  border: 1px solid rgba(255, 255, 255, .115);
+  background: linear-gradient(to top, rgba(190, 225, 255, .175) 0, rgba(190, 225, 255, .128) 2px, rgba(190, 225, 255, .075) 4px, rgba(190, 225, 255, .026) 6px, rgba(255, 255, 255, .012) 9px, rgba(255, 255, 255, .012) 100%);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+  white-space: nowrap;
+}
+.hv-badge i {
+  position: absolute; left: 4px; top: 4px; width: 29px; height: 29px; border-radius: 8px; display: grid; place-items: center;
+  background: linear-gradient(to top, #46afc8 0, #35abc7 2px, #0b859d 4px, #026c84 6px, #004e66 8px, #053f58 10px, #012c3d 12px, #031a2a 14px, #061125 16px, #090f25 19px, #090c1c 23px, #060d16 29px);
+  box-shadow: inset 1px 0 0 rgba(150, 220, 250, .4), inset -1px 0 0 rgba(150, 220, 250, .52), 0 0 6px rgba(60, 190, 230, .2), 0 3px 8px -5px rgba(90, 220, 255, .6);
+}
+.hv-badge i svg { width: 14px; height: 16px; position: relative; top: -1px; }
+/* o rótulo fica à direita do ícone (padding), nunca por baixo dele; a largura acompanha o texto */
+.hv-badge b {
+  display: flex; align-items: center; height: 39px; padding: 1.5px 18px 0 45px;
+  font-size: 13px; font-weight: 400; color: rgba(255, 255, 255, .94);
+}
+
+/* ---------- Texto ---------- */
+.hv-h1 {
+  left: 586px; top: 152px; transform: translateX(-50%); width: 860px; text-align: center; z-index: 300;
+  font-weight: 900; font-size: 46px; line-height: 1.07; letter-spacing: -.004em; word-spacing: .12em;
+  text-transform: uppercase; color: #fff; text-wrap: balance;
+  text-shadow: 0 0 34px rgba(130, 180, 255, .22);
+}
+.hv-sub {
+  left: 586px; top: 268px; transform: translateX(-50%); width: 500px; text-align: center; z-index: 300;
+  font-size: 13.2px; line-height: 1.6; color: #a9aeb5; text-wrap: balance;
+}
+.hv-ctas { left: 586px; top: 326px; transform: translateX(-50%); display: flex; gap: 12px; z-index: 300; }
+
+/* ---------- Botão com luz no pé (o brilho é um gradiente recortado pelo próprio retângulo) ---------- */
+.hv-btn {
+  display: grid; place-items: center; position: relative; overflow: hidden; color: #fff;
+  height: 54.5px; padding: 0 28px; border-radius: 13px; font-size: 16px; font-weight: 500; letter-spacing: -.01em; white-space: nowrap;
+  background: linear-gradient(to top, #9ad9ec 1px, #89dff0 2px, #79e0f1 3px, #61daef 4px, #3ec8e4 5px, #14a8c6 6px, #0596b3 7px, #038aa8 8px, #047796 9px, #006180 10px, #025066 12px, #0a4f5e 13px, #04465a 14px, #073746 16px, #0a2a37 18px, #0d212e 20px, #0f1824 24px, #0a121e 30px, #0a111d 34px, #0a111d 100%);
+  box-shadow: inset 0 3px 3px -2px rgba(180, 228, 255, .1), inset 1px 0 0 rgba(255, 255, 255, .09), inset -1px 0 0 rgba(255, 255, 255, .09), 1px 0 0 rgba(152, 218, 234, .17), -1px 0 0 rgba(152, 218, 234, .17), 0 0 8px rgba(60, 190, 235, .1), 0 2px 5px -3px rgba(90, 220, 255, .45);
+  transition: transform .25s, box-shadow .25s, filter .25s;
+}
+.hv-btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1;
+  background: linear-gradient(90deg, rgba(200, 245, 255, .7), rgba(200, 245, 255, 0) 13px), linear-gradient(270deg, rgba(200, 245, 255, .7), rgba(200, 245, 255, 0) 13px);
+  -webkit-mask: linear-gradient(to top, #000 0, #000 6px, rgba(0, 0, 0, .4) 12px, rgba(0, 0, 0, .15) 18px, rgba(0, 0, 0, .09) 24px, rgba(0, 0, 0, .02) 30px, rgba(0, 0, 0, .02) 100%);
+  mask: linear-gradient(to top, #000 0, #000 6px, rgba(0, 0, 0, .4) 12px, rgba(0, 0, 0, .15) 18px, rgba(0, 0, 0, .09) 24px, rgba(0, 0, 0, .02) 30px, rgba(0, 0, 0, .02) 100%);
+}
+.hv-btn span { position: relative; z-index: 2; display: block; line-height: 1; text-shadow: 0 1px 2px rgba(0, 20, 30, .5); }
+.hv-btn:hover { transform: translateY(-1px); filter: brightness(1.12); box-shadow: inset 0 1px 0 rgba(200, 245, 255, .6), inset 1px 0 0 rgba(170, 225, 255, .35), inset -1px 0 0 rgba(170, 225, 255, .35), 0 6px 22px rgba(20, 180, 225, .55); }
+/* secundário: mesmo tamanho, sem a luz no pé */
+.hv-btn.ghost { background: rgba(255, 255, 255, .045); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16); }
+.hv-btn.ghost::after { display: none; }
+.hv-btn.ghost:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .32); }
+.hv-btn:focus-visible { outline: 2px solid rgba(120, 225, 255, .8); outline-offset: 3px; }
+
+/* ---------- Anel 3D de cards ---------- */
+.hv-showcase { left: 0; top: 0; width: 1172px; height: 0; }
+.hv-ring { position: absolute; left: 0; top: 0; width: 1172px; height: 657px; z-index: 5; perspective: 891px; perspective-origin: 586px 918px; transform-style: preserve-3d; pointer-events: none;
+  /* desktop: anel a 90% e subido para o card aparecer inteiro (y≈405–675 da tela de design), como no celular */
+  transform-origin: 586px 616px; transform: translateY(-76px) scale(.9); }
+/* legenda maior no desktop para compensar a redução do anel */
+@media (min-width: 701px) { .hv-card .chip { font-size: 10px; padding: 5px 10px 5px 9px; left: 11px; top: 13px; } }
+.hv-card {
+  position: absolute; left: 586px; top: 616px; width: 130px; height: 300px; margin: -150px 0 0 -65px;
+  border-radius: 12px; overflow: hidden; background: #0d1117;
+  box-shadow: 0 24px 46px rgba(0, 0, 0, .6), 0 3px 8px rgba(0, 0, 0, .5);
+  backface-visibility: hidden; will-change: transform; visibility: hidden;
+}
+.hv-card .ph { position: absolute; inset: 0; background: linear-gradient(155deg, #2b3b50, #131c28 60%, #1d1526); }
+.hv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hv-card .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4, 8, 16, .55) 0, rgba(4, 8, 16, 0) 26%); }
+/* legenda no topo do card: é a parte que aparece quando o anel sangra pela borda de baixo */
+.hv-card .chip {
+  position: absolute; left: 10px; top: 12px; max-width: calc(100% - 20px); padding: 4px 9px 4px 8px; border-radius: 20px;
+  font-size: 8.5px; font-weight: 600; letter-spacing: .01em; line-height: 1.2; white-space: nowrap; color: #fff;
+  background: rgba(8, 12, 20, .62); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.hv-card .edge { position: absolute; inset: 0; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .15), inset 0 16px 30px rgba(255, 255, 255, .05); }
+.hv-card.broken img { display: none; }
+
+/* ---------- Entrada (uma vez): usa as propriedades individuais translate/scale, que compõem com o transform ---------- */
+.hv:not([data-ready]) .hv-in { opacity: 0; }
+.hv[data-ready] .hv-in { animation: hv-rise .9s cubic-bezier(.16, 1, .3, 1) both; animation-delay: var(--d, 0ms); }
+@keyframes hv-rise { from { opacity: 0; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+
+/* ---------- Telefone (<= 700px): coluna em fluxo normal ---------- */
+@media (max-width: 700px) {
+  .hv { display: flex; height: auto; min-height: max(100svh, 640px); }
+  .hv-canvas { position: relative; left: auto; top: auto; width: 100%; height: auto; min-height: inherit; transform: none; display: flex; flex-direction: column; align-items: center; padding: 96px 20px 0; flex: 1 1 auto; }
+  .hv-canvas > * { position: static; }
+  .hv-stack { display: contents; }
+  .hv-stack > * { position: static; }
+  .hv-badge { position: relative; left: auto; top: auto; transform: none; height: 36px; border-radius: 18px; max-width: 100%; flex: 0 0 auto; }
+  .hv-badge b { height: 36px; padding: 0 15px 0 42px; font-size: 12.5px; }
+  .hv-badge i { top: 4px; left: 4px; width: 28px; height: 28px; }
+  .hv-badge i svg { width: 13px; height: 19px; }
+  .hv-h1 { position: relative; left: auto; top: auto; transform: none; width: auto; max-width: 11em; margin-top: clamp(14px, 2.4vh, 22px); font-size: clamp(26px, 7.4vw, 34px); line-height: 1.08; letter-spacing: -.01em; }
+  .hv-sub { position: relative; left: auto; top: auto; transform: none; width: auto; max-width: 340px; margin-top: clamp(10px, 1.8vh, 16px); font-size: clamp(14px, 3.9vw, 15.5px); line-height: 1.5; }
+  .hv-ctas { position: relative; left: auto; top: auto; transform: none; margin-top: clamp(16px, 2.6vh, 26px); flex-wrap: wrap; justify-content: center; flex: 0 0 auto; }
+  .hv-btn { height: 52px; padding: 0 24px; font-size: 16px; }
+  .hv-showcase { position: relative; left: auto; top: auto; flex: 1 1 auto; width: 100%; height: auto; min-height: 224px; }
+  /* o anel mantém a geometria 3D completa, só reposicionada e recortada */
+  .hv-ring { position: absolute; left: 50%; margin-left: -586px; top: -446px; width: 1172px; height: 657px; transform-origin: 586px 466px; transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hv .hv-in, .hv:not([data-ready]) .hv-in { animation: none; opacity: 1; translate: none; }
+}

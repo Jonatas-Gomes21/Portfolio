@@ -10,3 +10,7 @@ export const AssetsProvider = AssetsContext.Provider;
 export function useAsset(path: string) {
   return useContext(AssetsContext)[path] === true;
 }
+
+export function useAvailableAssets() {
+  return useContext(AssetsContext);
+}
