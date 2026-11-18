@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { List, Moon, Sun, X } from "@phosphor-icons/react";
+import { List, X } from "@phosphor-icons/react";
 import { useLang, useT } from "@/components/providers";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { cn } from "@/lib/utils";
 
 const ids = ["inicio", "projetos", "trajetoria", "contato"] as const;
@@ -21,15 +22,6 @@ export function Nav() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
-
-  function toggleTheme() {
-    const el = document.documentElement;
-    const next = el.dataset.theme === "light" ? "dark" : "light";
-    el.dataset.theme = next;
-    try {
-      localStorage.setItem("theme", next);
-    } catch {}
-  }
 
   const linkClass =
     "rounded-control px-4 py-2 text-[0.92rem] text-muted transition-colors hover:text-ink";
@@ -89,15 +81,10 @@ export function Nav() {
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={toggleTheme}
+            <AnimatedThemeToggler
               aria-label={t.nav.themeLabel}
               className="grid size-10 place-items-center rounded-control text-muted transition-colors hover:text-ink"
-            >
-              <Moon size={20} className="theme-icon-moon" aria-hidden="true" />
-              <Sun size={20} className="theme-icon-sun" aria-hidden="true" />
-            </button>
+            />
             <button
               type="button"
               aria-expanded={open}

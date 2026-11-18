@@ -9,7 +9,7 @@ export function Process() {
   return (
     <section
       aria-labelledby="process-title"
-      className="bg-raised px-5 py-24 md:px-8 md:py-32"
+      className="bg-band-raised px-5 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">

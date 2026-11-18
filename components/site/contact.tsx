@@ -27,7 +27,7 @@ export function Contact() {
     <section
       id="contato"
       aria-labelledby="contact-title"
-      className="bg-raised px-5 py-24 md:px-8 md:py-32"
+      className="bg-band-raised px-5 py-24 md:px-8 md:py-32"
     >
       <Reveal className="mx-auto max-w-6xl">
         <Eyebrow>{t.contact.eyebrow}</Eyebrow>

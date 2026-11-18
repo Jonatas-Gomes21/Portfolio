@@ -8,10 +8,10 @@ import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { Nav } from "@/components/site/nav";
 import { Process } from "@/components/site/process";
+import { SiteBackground } from "@/components/site/site-background";
 import { Projects } from "@/components/site/projects";
 import { Services } from "@/components/site/services";
 import { Stack } from "@/components/site/stack";
-import { TechMarquee } from "@/components/site/tech-marquee";
 import { Timeline } from "@/components/site/timeline";
 
 function SkipLink() {
@@ -30,12 +30,12 @@ export function Portfolio({ available }: { available: Record<string, boolean> })
   return (
     <AssetsProvider value={available}>
       <Providers>
+        <SiteBackground />
         <SkipLink />
         <Nav />
         <main id="conteudo">
           <Hero />
           <Projects />
-          <TechMarquee />
           <Stack />
           <Services />
           <Process />

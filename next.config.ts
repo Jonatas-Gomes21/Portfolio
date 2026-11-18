@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  allowedDevOrigins: ["10.0.0.104"],
+  allowedDevOrigins: ["10.0.0.104", "10.0.3.177"],
   experimental: {
     agentFeedback: true,
   },

@@ -14,7 +14,7 @@ export function Footer() {
   const linkClass = "text-muted transition-colors hover:text-ink";
 
   return (
-    <footer className="border-t border-line bg-sunken px-5 py-16 md:px-8">
+    <footer className="border-t border-line bg-band-sunken px-5 py-16 md:px-8">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-12">
         <div className="md:col-span-6">
           <p className="font-display text-2xl font-bold tracking-tight">Jonatas Gomes</p>
