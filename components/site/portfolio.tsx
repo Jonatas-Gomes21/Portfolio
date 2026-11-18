@@ -13,6 +13,7 @@ import { Projects } from "@/components/site/projects";
 import { Services } from "@/components/site/services";
 import { Stack } from "@/components/site/stack";
 import { Timeline } from "@/components/site/timeline";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 function SkipLink() {
   const t = useT();
@@ -32,6 +33,7 @@ export function Portfolio({ available }: { available: Record<string, boolean> })
       <Providers>
         <SiteBackground />
         <SkipLink />
+        <ScrollProgress />
         <Nav />
         <main id="conteudo">
           <Hero />
